@@ -491,7 +491,7 @@ const categories = [
     "the regression we run here is sin(a)~value and sin(b)~value",
     "After that, all you gotta do is plug in the value or do y₁ = value of y (you can't use y by itself in the equation! x and y cannot be used as regression terms)"
     ],
-    explanationImage: 'https://i.ibb.co/mCV5z8c7/Trignometric-Identity-Evaluation-Example.png',
+    explanationImage: 'https://i.imgur.com/d7l5mqX.png',
     //tutorialLink: '',
     questionGenerator: function() {
         // Function to generate a rational value between 0 and 1, rounded to 2 decimal places.
@@ -557,7 +557,7 @@ const categories = [
             "A percentage increase is calculated as: original value × (1 + percent/100)",
             "A percentage decrease is calculated as: original value × (1 - percent/100)"
         ],
-        explanationImage: 'https://i.ibb.co/zhpSdvWh/Simple-Percentage-Change-Example.png',
+        explanationImage: 'https://i.imgur.com/xJncYpd.png',
         //tutorialLink: '',
         questionGenerator: function() {
             let x;
@@ -616,7 +616,7 @@ const categories = [
             "You can delete everything by clicking the gear then 'Delete All', or use the shortcut Ctrl+Shift+L",
             "Some more shortcuts in the link in the (?) at the top left!"
         ],
-        explanationImage: 'https://i.ibb.co/fsBx5kH/Two-points-Non-Linear-Example.png',
+        explanationImage: 'https://i.imgur.com/wMi0Nnf.png',
         //tutorialLink: '',
         questionGenerator: function() {
             let m, b, x1, x2, k1, k2, g_x1, g_x2;
@@ -752,7 +752,7 @@ const categories = [
             "You can write 'table' or do Ctrl+Alt+T in Desmos instead of clicking '+' then 'table'",
             "You can go to the next cell by pressing the 'Tab' key"
         ],
-        explanationImage: 'https://i.ibb.co/ymSb2Zrk/Circle-Regression-Example.png',
+        explanationImage: 'https://i.imgur.com/o5bG7U5.png',
         //tutorialLink: '',
         questionGenerator: function() {
             const h = randInt(-10, 10);
@@ -794,7 +794,7 @@ const categories = [
         "Here, we can plug the equation given into desmos with 'x₁' instead of 'x' and '~' instead of '='",
         "However, this equation must be true for all values of x₁. Therefore, enter x₁ = [1...10] or something to that effect. After that, all we need to do is a+b+c"
     ],
-    explanationImage: 'https://i.ibb.co/8Lv8bK8w/Equivalent-Expression-Constants.png', /* forgot to write example lol */
+    explanationImage: 'https://i.imgur.com/EtJ0eA2.png', /* forgot to write example lol */
     //tutorialLink: '',
     questionGenerator: function() {
         let x2_coeff, x_coeff, const_term;
@@ -857,7 +857,7 @@ const categories = [
     "What we can do here is plug in one of the forms (they're all equivalent)",
     "After that, run the regression 'f(a+increase)/f(a)~c' where the increase is the fraction by which 'x' increases to increase f(x) by a factor of 'c'. This will work for any value of 'a'"
     ],
-    explanationImage: 'https://i.ibb.co/4Z3C3kGj/Exponential-Coefficients-Example.png',
+    explanationImage: 'https://i.imgur.com/GfHfU3N.png',
     //tutorialLink: '',
     questionGenerator: function() {
         const a = Math.floor(Math.random() * 50) + 10;
@@ -960,7 +960,7 @@ const categories = [
             "Using that kind of regression, we can run a = x₁% of b, a = x₂% of c, and c = (p/100)% of b where x₁ x₂ and the percentages given!",
             "This kind of regression is shown in the solved example below",
         ],
-        explanationImage: 'https://i.ibb.co/C30LbzJq/Complex-Percentage-Relationships-Example.png',
+        explanationImage: 'https://i.imgur.com/1G658Jg.png',
         //tutorialLink: '',
         questionGenerator: function() {
             let percent_ab, percent_ac;
@@ -998,7 +998,7 @@ const categories = [
             "We can regress both expressions to the values they are made equal to, and then plot the first expression given",
             "After that, find the less positive or more positive value by plotting and checking x²+bx+c=0"
         ],
-        explanationImage: 'https://i.ibb.co/VcTPtfH7/Quadratic-System-of-Equations-Example.png',
+        explanationImage: 'https://i.imgur.com/uGH5vyN.png',
         //tutorialLink: '',
         questionGenerator: function() {
             let x1, x2;
@@ -1045,7 +1045,7 @@ const categories = [
             "If the question asks for the vertex, you can simply run the midpoint function midpoint((x₁,0),(x₂,0)) to get the x coordinate of the vertex",
             "If the question gave you the vertex x and y coordinates and one x-intercept you could actually plot the graph! You have the vertex and two x-intercepts. If you plot those on a table and run a quadratic regression you'll get the expression"
         ],
-        explanationImage: 'https://i.ibb.co/7t6yBDJK/Parabola-Symmetry-Vertex-and-Intercepts.png',
+        explanationImage: 'https://i.imgur.com/VcPPMTG.png',
         //tutorialLink: '',
         questionGenerator: function() {
             let x1_intercept, x2_intercept;
@@ -1091,7 +1091,7 @@ const categories = [
             "To do this quickly with Desmos, we can plug in the equation, set a value for 'p', use the built-in distance() Desmos function and run a simple regression of np~radius to find 'n'",
             "Remember to use radius, not diameter!"
         ],
-        explanationImage: 'https://i.ibb.co/MDbRthrX/Radius-of-Non-Standard-Circle-Example.png',
+        explanationImage: 'https://i.imgur.com/RjordBF.png', //I am NOT fixing that tiny error at the top
         //tutorialLink: '',
         questionGenerator: function() {
             let a, h, k, n;
@@ -1140,7 +1140,7 @@ const categories = [
             "Consider a trinomial expressed in the form (x+a)(x+b)(x+c) where a b and c are NOT coefficients of x³ x² and x",
             "The roots of the trinomial expression given will be possible values of 'b' multiplied by -1 (because if 5 is a root, (x-5) is a factor because x-5=0 gives x=5, and if -5 is a root, (x+5) is a factor because x+5=0 gies x=-5)"
         ],
-        explanationImage: 'https://i.ibb.co/8tPybxt/Trinomial-Factoring-Example.png',
+        explanationImage: 'https://i.imgur.com/e0EZJPG.png',
         //tutorialLink: '', /* My placeholder was https://youtu.be/dQw4w9WgXcQ. Very nice video of cute pupy */
         questionGenerator: function() {
             // We want to generate a question similar to the one in the image.
@@ -1192,7 +1192,7 @@ const categories = [
             "After you've found four integer values for a, b, c and d, check the value of both ab and cd. This is because ab could equal cd (look at how the expression is structured. (ax²+b) can swap with (cx²+d))",
             "A shorter regression not shown in the example is [ac , ad+bc , bd]~[q/k , s/k , t/k] where 'q', 's' and 't' are the coefficients of x⁴, x² and x⁰, respectively. You will not need to set x₁=[1...10] (this type of regression is explained in 'Complex Percentage Relationships') "
         ],
-        explanationImage: 'https://i.ibb.co/gMZw01Qp/Factoring-a-Quartic-Function-Example.png',
+        explanationImage: 'https://i.imgur.com/0bUqJNt.jpeg',
         //tutorialLink: '',
         questionGenerator: function() {
             // Helper function to get all positive integer factors of a number
@@ -1320,7 +1320,7 @@ const categories = [
     "This question structured specifically can actually be solved simply by doing y+1.",
     "This is because, when we substitute x = 1 into the expression we get the value of a+b+c. When we substitute x = 1 into the vertex form, we show that a+b+c = (p)a - (q) where p and q are poisitive integers. Since 'a' is always positive, the value will be less than the constant 'q'"
     ],
-    explanationImage: 'https://i.ibb.co/8DktjdVy/Quadratic-Regression-Limit-Example.png',
+    explanationImage: 'https://i.imgur.com/dCFdDiY.png',
     //tutorialLink: '',
 
     questionGenerator: function() {
