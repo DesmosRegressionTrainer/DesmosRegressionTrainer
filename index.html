@@ -1088,7 +1088,21 @@ const categories = [
             // The answer is the random integer n that was chosen
             const answer = n;
 
-            return { questionText, answer };
+            const p_val = 2; //
+            const center_k = -(c_coeff * p_val) / (2 * a);
+            const radius_val = n * p_val;
+            const highestPoint = center_k + radius_val;
+            const lowestPoint = center_k - radius_val;
+
+            return { questionText, answer, desmosSolutions: [                
+                { id: 'sol1', latex: `${a}x^2 ${b_coeff < 0 ? `- ${Math.abs(b_coeff)}` : `+ ${b_coeff}`}px + ${a}y^2 ${c_coeff < 0 ? `- ${Math.abs(c_coeff)}` : `+ ${c_coeff}`}py = ${d_const < 0 ? `- ${Math.abs(d_const)}` : d_const}p^2` },
+                { id: 'sol2', latex: `p=2`},
+                { type: 'text', id: 'note1', text: `Remember, 2 is completely arbitrary. However, if you change it, the circle will change and you must therefore also adjust the radius calculation in the below regression`},
+                { id: 'sol3', latex: `R_{adius} = \\frac{${highestPoint}-${lowestPoint}}{2}` },
+                { id: 'sol4', latex: `np~${radius_val}`},
+
+                { type: 'text', id: 'note2', text: `The value of n is therefore ${n}` }
+            ] };
             }
         },
 
@@ -1128,9 +1142,14 @@ const categories = [
             if (hasXFactor) {
                 const questionText = `One of the factors of $$${a_coeff}x^3 + ${B_coeff}x^2 + ${C_coeff}x$$ is (x + b), where b is a positive constant. What is the smallest possible value of b?`;
                 const answer = Math.min(b1, b2);
-                return { questionText, answer };
+                return { questionText, answer, desmosSolutions: [
+                    { id: 'sol1', latex: `${a_coeff}x^3 + ${B_coeff_noX}x^2 + ${C_coeff_noX}x + ${D_coeff_noX}` },
+                    { id: 'sol2', latex: `A_{nswer} = (${answer},0)` },
+                    { type: 'text', id: 'note1', text: `The smallest possible value of b is therefore ${answer}` }
+                ] };
             } else {
                 // Now, generate a polynomial without a common x factor
+                // Hey, future Sceptrell here. Adding the Desmos Solutions. I have NO IDEA what this is but I faaar too lazy to decipher this (even though it's probably not allat) or delete it because it's probably important; just going to leave the same solution and hope it's correct :thumbsup: 
                 const b3 = randInt(2, 10);
                 const B_coeff_noX = a_coeff * (b1 + b2 + b3);
                 const C_coeff_noX = a_coeff * (b1 * b2 + b1 * b3 + b2 * b3);
@@ -1138,7 +1157,11 @@ const categories = [
 
                 const questionText = `One of the factors of $$${a_coeff}x^3 + ${B_coeff_noX}x^2 + ${C_coeff_noX}x + ${D_coeff_noX}$$ is (x + b), where b is a positive constant. What is the smallest possible value of b?`;
                 const answer = Math.min(b1, b2, b3);
-                return { questionText, answer, desmosSolutions};
+                return { questionText, answer, desmosSolutions: [
+                    { id: 'sol1', latex: `${a_coeff}x^3 + ${B_coeff_noX}x^2 + ${C_coeff_noX}x + ${D_coeff_noX}` },
+                    { id: 'sol2', latex: `A_{nswer} = (-${answer},0)` },
+                    { type: 'text', id: 'note1', text: `The smallest possible value of b is therefore ${answer}` }
+                ] };
             }
         }
     },
@@ -1168,6 +1191,7 @@ const categories = [
 
             let coeff_x4, coeff_x2, coeff_const;
             let smallest_ab;
+            let final_a //need this for the desmosSolutions
             let isSolvable = false;
 
             while (!isSolvable) {
@@ -1182,24 +1206,29 @@ const categories = [
                 coeff_const = k * b * d;
 
                 const possible_ab_values = new Set();
+                const possible_a_values = new Set();
                 
                 const x4_factors = getIntegerFactors(coeff_x4);
                 const const_factors = getIntegerFactors(coeff_const);
 
-                for (const ac of x4_factors) {
-                    const ac_prime = coeff_x4 / ac;
+                for (const ac_factor of x4_factors) {
+                    const ac_prime = coeff_x4 / ac_factor;
 
-                    for (const bd of const_factors) {
-                        const bd_prime = coeff_const / bd;
-                        
-                        if ((ac * bd_prime + ac_prime * bd) === coeff_x2) {
-                            possible_ab_values.add(ac * bd);
+                    for (const bd_factor of const_factors) {
+                        const bd_prime = coeff_const / bd_factor;
+
+                        if ((ac_factor * bd_prime + ac_prime * bd_factor) === coeff_x2) {
+                        possible_ab_values.add(ac_factor * bd_factor);
+                            possible_a_values.add(ac_factor);
+                            possible_a_values.add(ac_prime);
                         }
                     }
                 }
                 
                 if (possible_ab_values.size > 0) {
                     smallest_ab = Math.min(...possible_ab_values);
+                    final_a = Math.min(...possible_a_values);
+
                     isSolvable = true; 
                 }
             }
@@ -1209,9 +1238,22 @@ const categories = [
             `;
 
             const answer = smallest_ab;
+
             return { 
-                questionText, 
-                answer,
+                questionText, answer, desmosSolutions: [
+                    { id: 'sol1', latex: `k=\\operatorname{gcf}\\left(${coeff_x4}, ${coeff_x2}, ${coeff_const}\\right)` },
+                    { id: 'sol2', latex: `(k)(ax_1^2 + b)(cx_1^2 + d)~${coeff_x4}x_1^4+${coeff_x2}x_1^2 + ${coeff_const}`},
+                    { id: 'sol3', latex: `x_{1}=\\left[1...10\\right]`},
+                    { id: 'sol7', latex: `   `}, //yea atp just do it yourself ngl o.o
+                    //{ id: 'sol4', latex: `a=${final_a}` },
+                    //{ type: 'text', id: 'note4', text: `Above is the minimum possible value for a. If the regression does not show all integer values, replace the value of a with the displayed value of c. Any possible value of a is a possible value of c, but this is a consequence of how Desmos handles regressions (or it's a skill issue on my part o.o)`},
+                    { type: 'text', id: 'note1', text: `You get a by trial and error. Try integer values of a in the above cell until you see that each variable is a positive integer (Desmos may have already done this)`},
+                    { id: 'sol5', latex: `ab`},
+                    { id: 'sol6', latex: `cd`},
+                    { type: 'text', id: 'note2', text: `Check the value of both ab and cd because any possible value for ab is also a possible value for cd. (ax²+b)(cx²+d) is the same as (cx²+d)(ax²+b)` },
+                    { type: 'text', id: 'note3', text: `The smallest possible value of ab is therefore ${smallest_ab}` },
+                    //{ id: 'sol7', latex: `b=${smallest_ab/final_a}`}
+                    ]
             };
         }
     },
@@ -1251,6 +1293,12 @@ const categories = [
             return { 
                 questionText, 
                 answer,
+                desmosSolutions: [
+                    { id: 'sol1', latex: `f(x) = ${A_coeff}x^2 + ${b_coeff}x + a` },
+                    { id: 'sol2', latex: `f\\left(-\\frac{${b_coeff}}{2(${A_coeff})}\\right)~${c_const}`},
+                    { type: 'text', id: 'note1', text: `The value of a is therefore ${answer}` },
+
+                ]
             };
             }
         },
@@ -1289,6 +1337,15 @@ const categories = [
         return { 
             questionText, 
             answer: parseFloat(answer.toFixed(3)), 
+            desmosSolutions: [
+            {type: 'table', columns: [{latex: 'x_1',values: [`${h}`,`${h}+d`,`${h}-d`]},{latex: 'y_1',values: [`${k}`,`0`,`0`]}]},
+            { id: 'sol1', latex: `y_1~ax_1^2+bx_1+c` },
+            { id: 'sol2', latex: `d=1000000`},
+            { id: 'sol3', latex: `a+b+c`},            
+            { type: 'text', id: 'note1', text: `The smallest possible integer value of a+b+c is therefore ${answer}` }
+            
+            
+            ]
         };
         }
     },
