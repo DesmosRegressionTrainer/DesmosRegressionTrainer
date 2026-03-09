@@ -980,14 +980,14 @@ const categories = [
                 questionText, 
                 answer,
                 desmosSolutions: [
-                    { id: 'sol1', latex: '\\left[-b+\\sqrt{b^{2}-4c},-b-\\sqrt{b^{2}-4c}\\right]\\sim\\left[-2,-10\\right]' },
+                    { id: 'sol1', latex: `\\left[-b+\\sqrt{b^{2}-4c},-b-\\sqrt{b^{2}-4c}\\right]\\sim\\left[${numerator1}, ${numerator2}\\right]` },
                     { id: 'sol2', latex: 'x^{2}+bx+c=0' },
-                    { type: 'text', id: 'note1', text: `The ${askSmaller ? 'less positive' : 'more positive'} value of x is therefore ${answer}` }
+                    { type: 'text', id: 'note1', text: `Looking at the graph, the ${askSmaller ? 'less positive' : 'more positive'} value of x is therefore ${answer}` }
                 ]
             };
         }
     },
-
+  
     {
         id: 'Parabola Symmetry (Vertex & Intercepts)',
         title: '(Medium) Parabola Symmetry (Vertex & Intercepts)',
