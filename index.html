@@ -21,6 +21,7 @@
   <meta name="description" content="Master SAT math regressions with our comprehensive guide and Desmos calculator tricks. Learn step-by-step tutorials for linear, quadratic, and exponential models."/>
 
   <script src="https://www.desmos.com/api/v1.11/calculator.js?apiKey=4435f284d2154cf48e80abbbffc842cd"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   
   <style>
     /* Bluebook-inspired Base Styles */
@@ -69,6 +70,27 @@
       position: sticky;
       top: 0;
       z-index: 1000;
+    }
+
+    #trophy-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.6);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease-out;
+    user-select: none;
+    }
+    #trophy-button:hover {
+        background: rgba(255,255,255,0.15);
+        border-color: white;
+        transform: scale(1.05);
     }
 
     #top-bar h1 {
@@ -489,6 +511,61 @@
     
     #help-popup p { font-size: 0.95rem; line-height: 1.5; color: var(--bb-text-secondary); margin-bottom: 8px; }
     #help-popup h3 { color: var(--bb-header-bg); border-bottom: 1px solid var(--bb-border); padding-bottom: 12px; margin-bottom: 16px; }
+
+    .category-learned label {
+    opacity: 0.55;
+}
+
+    .learned-badge {
+        margin-left: 8px;
+        color: var(--difficulty-easy);
+        font-size: 0.8rem;
+        font-weight: 700;
+        cursor: pointer;
+        border-radius: 3px;
+        padding: 1px 4px;
+        transition: background 0.15s;
+    }
+    .learned-badge:hover {
+        background: rgba(24, 128, 56, 0.15);
+        text-decoration: line-through;
+    }
+
+    #completion-modal {
+        display: none;
+        position: fixed;
+        z-index: 1003;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        background-color: rgba(0,0,0,0.6);
+        backdrop-filter: blur(4px);
+        align-items: center;
+        justify-content: center;
+    }
+
+    #completion-modal-content {
+        background: white;
+        border-radius: 16px;
+        padding: 36px 40px;
+        max-width: 520px;
+        width: 90%;
+        text-align: left;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        position: relative;
+        animation: popupSlide 0.25s ease-out forwards;
+    }
+
+    #completion-modal-content h2 {
+        margin-bottom: 12px;
+    }
+
+    #completion-modal-content p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--bb-text-secondary);
+        margin-bottom: 10px;
+    }
+
   </style>
 </head>
 <body>
@@ -498,7 +575,10 @@
         <div id="help-button" title="Info">?</div>
         <h1>Desmos Regression Trainer</h1>
     </div>
-    <div id="correct-counter">Correct: 0</div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <div id="trophy-button" title="All categories mastered! Click to view.">🏆</div>
+        <div id="correct-counter">Correct: 0</div>
+    </div>
 </div>
 
 <div id="main-container">
@@ -512,7 +592,8 @@
         <div class="category-controls" style="margin-bottom: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
             <button class="secondary" id="select-all" style="padding: 6px 16px; font-size: 0.85rem;">Select All</button>
             <button class="secondary" id="deselect-all" style="padding: 6px 16px; font-size: 0.85rem;">Deselect All</button>
-            <span style="font-size: 0.875rem; color: var(--bb-text-secondary);">I recommend solving categories in order!</span>
+            <button class="secondary" id="select-incomplete" style="padding: 6px 16px; font-size: 0.85rem;">Select Incomplete</button>
+            <span style="font-size: 0.875rem; color: var(--bb-text-secondary);">I recommend solving categories in order! Solved categories will be marked as complete ✓</span>
         </div>
             <div id="category-selection"></div>
         </div>
@@ -586,7 +667,7 @@
     </p>
 
     <p>
-        Khan Academy (of course) is great for developing or revising foundations: <a href="https://www.khanacademy.org/test-prep/v2-sat-math" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
+        Khan Academy, of course, is great for developing or revising foundations: <a href="https://www.khanacademy.org/test-prep/v2-sat-math" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
         Khan Academy →
         </a>
     </p>
@@ -604,7 +685,7 @@
     </p>
 
     <p>
-        Using leaked SATs is against CollegeBoard Terms & Conditions, so avoid sites like bluebooky.com at all costs
+        Using leaked SATs is against CollegeBoard Terms & Conditions, so definitely avoid sites like bluebooky.com at all costs
     </p>
 
     <p>
@@ -618,6 +699,21 @@
         </a>
     </p>
     <p style="font-size: 0.8rem; margin-top: 24px; border-top: 1px solid var(--bb-border); padding-top: 12px;">Questions or feedback? Email desmosspeedtrainer@gmail.com. All questions are welcome, and all feedback is appreciated!</p>
+</div>
+
+<div id="completion-modal">
+    <div id="completion-modal-content">
+        <span class="close-btn" id="close-completion-modal" style="color: #999; font-size: 24px; top: 16px; right: 20px;">&times;</span>
+        <h2>🎉 All Categories Mastered!</h2>
+        <p>Congratulations on reaching the end of the Desmos Regression Trainer 🥳 More practice is always beneficial, but you are now armed with the basic tools enabling you to solve a wide variety of SAT math questions quickly and efficiently. Good luck on your SAT!</p>
+        <p>For further practice elsewhere, here are some resources I recommend:</p>
+        <p>Khan Academy, of course, is great for developing or revising foundations: <a href="https://www.khanacademy.org/test-prep/v2-sat-math" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">Khan Academy →</a></p>
+        <p>Crackd has great questions with Desmos walkthroughs, though full access is paid: <a href="https://crackd.it/rt" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">Crackd →</a> <span style="font-size:0.85rem;">(Affiliate link; no extra cost to you)</span></p>
+        <p>For the official question bank: <a href="https://satquestionbank.org" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">satquestionbank.org →</a></p>
+        <p>Using leaked SATs is against CollegeBoard Terms & Conditions, so definitely avoid sites like bluebooky.com at all costs (:</p>
+        <p>See this list again by clicking the trophy icon in the top right (your category progress will be saved locally); happy studying!</p>
+        <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--bb-border); font-size: 0.85rem;">Questions or feedback? Email desmosspeedtrainer@gmail.com. All questions are welcome, and all feedback is appreciated!</p>
+    </div>
 </div>
 
 <script>
@@ -1467,13 +1563,13 @@ const categories = [
             "We can find k by finding the gcf of the three coefficients given (use the Desmos gcf (or gcd, same thing) built-in function), then run a regression and try values until one makes all the values integers. Remember that it must be true for all values of 'x', so do something to the effect of x₁=[1...10] (x₁ could be any value, 1-10 is chosen arbitrarily)",
             "After you've found four integer values for a, b, c and d (try integer values of a until one works), check the value of both ab and cd. This is because ab could equal cd (look at how the expression is structured. (ax²+b) can swap with (cx²+d))",
             "A shorter but less intuitive method not shown in the example is [ac , ad+bc , bd]~[q/k , s/k , t/k] where 'q', 's' and 't' are the coefficients of x⁴, x² and x⁰, respectively. You will not need to set x₁=[1...10] (this type of regression is explained in 'Complex Percentage Relationships') ",
-            "Congratulations on reaching the end of the Desmos Regression Trainer 🥳 You are now armed with the basic tools enabling you to solve a wide variety of SAT math questions quickly and efficiently. Good luck on your SAT!",
+            /*"Congratulations on reaching the end of the Desmos Regression Trainer 🥳 You are now armed with the basic tools enabling you to solve a wide variety of SAT math questions quickly and efficiently. Good luck on your SAT!",
             `I recommend the following resources for further practice:
             <p>Khan Academy, of course, is great for developing or revising foundations: <a href="https://www.khanacademy.org/test-prep/v2-sat-math" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">Khan Academy →</a></p>
             <p>Crackd has excellent questions with Desmos walkthroughs (full access paid): <a href="https://crackd.it/rt" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">Crackd →</a> (Affiliate link; no extra cost to you.)</p>
             <p>For the official question bank: <a href="https://satquestionbank.org" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">satquestionbank.org →</a></p>
             <p>Avoid sites like bluebooky.com as using leaked SATs violates CollegeBoard's Terms & Conditions.</p>
-            <p>Please do email me at desmosspeedtrainer@gmail.com with any questions, feedback, or suggestions!</p>`
+            <p>Please do email me at desmosspeedtrainer@gmail.com with any questions, feedback, or suggestions!</p>`*/
         ],
         explanationImage: 'https://i.imgur.com/0bUqJNt.jpeg',
         questionGenerator: function() {
@@ -1654,6 +1750,7 @@ function handleCheckAnswer() {
         if (!questionSolved) {
             incrementCounter();
             questionSolved = true;
+            markCategoryLearned(currentQuestion.category.id);
         }
         return true;
     } else {
@@ -1732,6 +1829,11 @@ document.getElementById('select-all').addEventListener('click', () => {
 document.getElementById('deselect-all').addEventListener('click', () => {
     document.querySelectorAll('#category-selection input').forEach(cb => cb.checked = false);
 });
+document.getElementById('select-incomplete').addEventListener('click', () => {
+    document.querySelectorAll('#category-selection input').forEach(cb => {
+        cb.checked = !learnedCategories.has(cb.value);
+    });
+});
 
 
 // Explanation Modal
@@ -1746,7 +1848,13 @@ document.getElementById('show-explanation').addEventListener('click', () => {
     }
 });
 document.getElementById('close-modal').onclick = () => { modal.style.display = 'none'; };
-window.onclick = (event) => { if (event.target == modal) modal.style.display = 'none'; };
+document.getElementById('close-completion-modal').onclick = () => { hideCompletionModal(); };
+document.getElementById('trophy-button').addEventListener('click', showCompletionModal);
+window.onclick = (event) => {
+    if (event.target == modal) modal.style.display = 'none';
+    if (event.target == document.getElementById('completion-modal')) hideCompletionModal();
+};
+
 
 
 document.getElementById('help-button').addEventListener('click', ()=>{ 
@@ -1755,10 +1863,121 @@ document.getElementById('help-button').addEventListener('click', ()=>{
 
 // ===== Correct Counter =====
 let correctCount = 0;
-function incrementCounter(){
+const learnedCategories = new Set();
+const STORAGE_KEY = 'drt-learned-categories';
+
+function saveLearnedToStorage() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...learnedCategories])); }
+    catch(e) {}
+}
+
+function loadLearnedFromStorage() {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            JSON.parse(stored).forEach(id => {
+                if (categories.find(c => c.id === id)) {
+                    learnedCategories.add(id);
+                    applyLearnedBadge(id);
+                }
+            });
+        }
+    } catch(e) {}
+}
+
+function showCompletionModal() {
+    document.getElementById('completion-modal').style.display = 'flex';
+    document.getElementById('trophy-button').style.display = 'flex';
+
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;';
+    document.body.appendChild(canvas);
+
+    const myConfetti = confetti.create(canvas, { resize: true });
+    const end = Date.now() + 3500;
+    const colors = ['#004D96', '#188038', '#f5c400', '#c5221f', '#ffffff'];
+
+    (function frame() {
+        myConfetti({
+            particleCount: 5,
+            angle: 60,
+            spread: 70,
+            startVelocity: 55,
+            origin: { x: 0, y: 0.6 },
+            colors: colors,
+            ticks: 200,
+        });
+        myConfetti({
+            particleCount: 5,
+            angle: 120,
+            spread: 70,
+            startVelocity: 55,
+            origin: { x: 1, y: 0.6 },
+            colors: colors,
+            ticks: 50,
+        });
+        if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                } else {
+                    canvas.style.transition = 'opacity 1.5s ease';
+                    canvas.style.opacity = '0';
+                    setTimeout(() => canvas.remove(), 1500);
+                }
+    })();
+}
+
+function hideCompletionModal() {
+    document.getElementById('completion-modal').style.display = 'none';
+}
+
+function applyLearnedBadge(categoryId) {
+    const checkbox = document.getElementById(`cat-${categoryId}`);
+    if (!checkbox) return;
+    const div = checkbox.closest('div');
+    div.classList.add('category-learned');
+    const label = div.querySelector('label');
+    if (label && !label.querySelector('.learned-badge')) {
+        const badge = document.createElement('span');
+        badge.className = 'learned-badge';
+        badge.textContent = '✓';
+        badge.title = 'Click to mark as incomplete';
+        badge.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            unmarkCategoryLearned(categoryId);
+        });
+        label.appendChild(badge);
+    }
+}
+
+function markCategoryLearned(categoryId) {
+    if (learnedCategories.has(categoryId)) return;
+    learnedCategories.add(categoryId);
+    applyLearnedBadge(categoryId);
+    saveLearnedToStorage();
+    if (learnedCategories.size === categories.length) {
+        setTimeout(showCompletionModal, 600);
+    }
+}
+
+function unmarkCategoryLearned(categoryId) {
+    learnedCategories.delete(categoryId);
+    const checkbox = document.getElementById(`cat-${categoryId}`);
+    if (checkbox) {
+        const div = checkbox.closest('div');
+        div.classList.remove('category-learned');
+        const badge = div.querySelector('.learned-badge');
+        if (badge) badge.remove();
+    }
+    saveLearnedToStorage();
+    if (learnedCategories.size < categories.length) {
+        document.getElementById('trophy-button').style.display = 'none';
+    }
+}
+
+function incrementCounter() {
     correctCount++;
-    const counter = document.getElementById('correct-counter');
-    counter.innerText = `Correct: ${correctCount}`;
+    document.getElementById('correct-counter').innerText = `Correct: ${correctCount}`;
 }
 
 // ===== Resizing Logic =====
@@ -1837,10 +2056,15 @@ document.getElementById('answer-box').addEventListener('keydown', function(e) {
 // ===== Initial Load =====
 document.addEventListener('DOMContentLoaded', () => {
     populateCategoryCheckboxes();
+    loadLearnedFromStorage();
+    if (learnedCategories.size === categories.length) {
+        document.getElementById('trophy-button').style.display = 'flex';
+    }
     document.getElementById('category-collapsible-content').style.display = 'none';
     setupResizer();
     newQuestion();
 });
+
 </script>
 
 </body>
