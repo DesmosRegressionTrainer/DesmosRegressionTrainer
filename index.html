@@ -673,15 +673,15 @@
     </p>
 
     <p>
-        Crackd has great questions with Desmos walkthroughs, though it requires a subscription: <a href="https://crackd.it/rt" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
-        Crackd →
-        </a> <span style="font-size:0.85rem;">(Affiliate link; no extra cost to you)</span>
+        For the official question bank, I recommend: <a href="https://satquestionbank.org" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
+        satquestionbank.org </a> or <a href="https://1600.lol/" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
+        1600.lol → </a> (as Oneprep has become more paywalled at seemingly no benefit)
     </p>
 
     <p>
-        For the official question bank, I recommend: <a href="https://satquestionbank.org" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
-        satquestionbank.org →
-        </a> (as Oneprep has become more paywalled at seemingly no benefit)
+        I recommend Crackd for its questions with wonderful Desmos walkthroughs similar to these, though it does require a subscription: <a href="https://crackd.it/rt" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
+        Crackd →
+        </a> <span style="font-size:0.85rem;">(Affiliate link; no extra cost to you)</span>
     </p>
 
     <p>
@@ -698,7 +698,7 @@
         Github Repository →
         </a>
     </p>
-    <p style="font-size: 0.8rem; margin-top: 24px; border-top: 1px solid var(--bb-border); padding-top: 12px;">Questions or feedback? Email desmosspeedtrainer@gmail.com. All questions are welcome, and all feedback is appreciated!</p>
+    <p style="font-size: 0.8rem; margin-top: 24px; border-top: 1px solid var(--bb-border); padding-top: 12px;">Questions or feedback? Please do email me at desmosspeedtrainer@gmail.com. All questions are welcome, and all feedback is appreciated!</p>
 </div>
 
 <div id="completion-modal">
@@ -707,12 +707,18 @@
         <h2>🎉 All Categories Mastered!</h2>
         <p>Congratulations on reaching the end of the Desmos Regression Trainer 🥳 More practice is always beneficial, but you are now armed with the basic tools enabling you to solve a wide variety of SAT math questions quickly and efficiently. Good luck on your SAT!</p>
         <p>For further practice elsewhere, here are some resources I recommend:</p>
-        <p>Khan Academy, of course, is useful for developing or revising foundations: <a href="https://www.khanacademy.org/test-prep/v2-sat-math" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">Khan Academy →</a></p>
-        <p>Crackd has great questions with Desmos walkthroughs, though full access is paid: <a href="https://crackd.it/rt" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">Crackd →</a> <span style="font-size:0.85rem;">(Affiliate link; no extra cost to you)</span></p>
-        <p>For the official question bank: <a href="https://satquestionbank.org" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">satquestionbank.org →</a></p>
-        <p>Using leaked SATs is against CollegeBoard Terms & Conditions, so definitely avoid sites like bluebooky.com at all costs (:</p>
+        <p>
+        Khan Academy, of course, is useful for developing or revising foundations: <a href="https://www.khanacademy.org/test-prep/v2-sat-math" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
+        Khan Academy →
+        </a></p>
+        <p>For the official question bank, I recommend: <a href="https://satquestionbank.org" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
+        satquestionbank.org </a> or <a href="https://1600.lol/" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
+        1600.lol </a></p>
+        <p>I recommend Crackd for its questions with wonderful Desmos walkthroughs similar to these, though it does require a subscription: <a href="https://crackd.it/rt" target="_blank" rel="noopener noreferrer" style="color: var(--bb-blue); font-weight: 500; text-decoration: none;">
+        Crackd →</a> <span style="font-size:0.85rem;">(Affiliate link; no extra cost to you)</span></p>
+        <p>Using leaked SATs is against CollegeBoard Terms & Conditions, so definitely avoid sites like bluebooky.com at all costs (:</p>        
         <p>See this list again by clicking the trophy icon in the top right (your category progress will be saved locally); happy studying!</p>
-        <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--bb-border); font-size: 0.85rem;">Questions or feedback? Email desmosspeedtrainer@gmail.com. All questions are welcome, and all feedback is appreciated!</p>
+        <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--bb-border); font-size: 0.85rem;">Questions or feedback? Please do email me at desmosspeedtrainer@gmail.com. All questions are welcome, and all feedback is appreciated!</p>
     </div>
 </div>
 
@@ -1748,6 +1754,13 @@ function handleCheckAnswer() {
     if (isCorrect) {
         document.getElementById('result').innerHTML = "✅ Correct!";
         document.getElementById('result').style.color = "#188038";
+
+        gtag('event', 'question_solved', {
+            'event_category': 'practice',
+            'event_label': currentQuestion.category.id,
+            'category_title': currentQuestion.category.title
+        });
+
         if (!questionSolved) {
             incrementCounter();
             questionSolved = true;
